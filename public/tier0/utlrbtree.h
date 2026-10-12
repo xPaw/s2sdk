@@ -450,7 +450,6 @@ protected:
 	I m_Root;
 	I m_NumElements;
 	I m_FirstFree;
-	void *m_pElements;
 
 	FORCEINLINE M const &Elements( void ) const
 	{
