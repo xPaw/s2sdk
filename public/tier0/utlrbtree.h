@@ -208,6 +208,24 @@ struct UtlRBTreeNode_t : public UtlRBTreeLinks_t< I >
 	T  m_Data;
 };
 
+// Source 1's CUtlMemory, which the tree stores its nodes in. Only reading is implemented.
+template < class T, class I >
+class CUtlRBTreeMemory
+{
+public:
+	static I InvalidIndex() { return ( I )-1; }
+	bool IsIdxValid( I i ) const { return ( size_t )i < ( size_t )m_nAllocationCount; }
+	bool IsIdxAfter( I i, I last ) const { return i > last; }
+	int Count() const { return m_nAllocationCount; }
+
+	T &operator[]( I i ) { return m_pMemory[i]; }
+	const T &operator[]( I i ) const { return m_pMemory[i]; }
+
+	T *m_pMemory;
+	int m_nAllocationCount;
+	int m_nGrowSize;
+};
+
 // Holds the less func, taking no space when it's stateless
 template < typename L, bool = std::is_empty_v<L> && !std::is_final_v<L> >
 class CUtlRBTreeLessFunc
@@ -232,7 +250,7 @@ protected:
 	const L &LessFunc() const { return *this; }
 };
 
-template < class T, class I = unsigned short, typename L = CDefLess< T >, class M = CUtlLeanVector< UtlRBTreeNode_t< T, I >, I > >
+template < class T, class I = unsigned short, typename L = CDefLess< T >, class M = CUtlRBTreeMemory< UtlRBTreeNode_t< T, I >, I > >
 class CUtlRBTree : protected CUtlRBTreeLessFunc<L>
 {
 	typedef CUtlRBTreeLessFunc<L> LessFuncBase;
@@ -432,6 +450,7 @@ protected:
 	I m_Root;
 	I m_NumElements;
 	I m_FirstFree;
+	void *m_pElements;
 
 	FORCEINLINE M const &Elements( void ) const
 	{

@@ -26,7 +26,7 @@ template <class K, class V>
 class CSchemaPtrMap
 {
 public:
-	CUtlOrderedMap<K, V, CDefLess<K>, unsigned short> m_Map;
+	CUtlOrderedMap<K, V, bool (*)( const K &, const K & ), unsigned short> m_Map;
 	CThreadFastMutex m_Mutex;
 };
 
@@ -169,18 +169,7 @@ private:
 public:
 	CThreadFastMutex m_Mutex;
 
-	CConCommandMemberAccessor<CSchemaSystem> m_SchemaListBindings;
-	CConCommandMemberAccessor<CSchemaSystem> m_SchemaAllListBindings;
-	CConCommandMemberAccessor<CSchemaSystem> m_SchemaDumpBinding;
-	CConCommandMemberAccessor<CSchemaSystem> m_SchemaDetailedClassLayout;
-	CConCommandMemberAccessor<CSchemaSystem> m_SchemaStats;
-	CConCommandMemberAccessor<CSchemaSystem> m_SchemaMetaStats;
-	
-	CUtlVector<void*> m_LoadedModules;
-	CUtlVector<DetectedSchemaMismatch_t> m_DetectedSchemaMismatches;
-	
-	bool m_bDefaultTypeScopeIsLocal;
-	bool m_bSchemaSystemIsReady;
+	uint8 m_unk002[0x5468 - 0x34];
 	
 	CUtlStringMap<CSchemaSystemTypeScope*> m_TypeScopes;
 	CUtlStringMap<BindingsAddressRangeForModule_t> m_BindingsAddressRanges;

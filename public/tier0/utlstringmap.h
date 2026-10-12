@@ -75,7 +75,7 @@ public:
 
 	int GetNumStrings( void ) const
 	{
-		return m_SymbolTable.GetNumStrings();
+		return m_Vector.Count();
 	}
 
 	const char *String( int n )	const

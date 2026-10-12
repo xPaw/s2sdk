@@ -35,7 +35,7 @@ struct SchemaTypeMap {};
 { \
 	static const SchemaTypeCategory_t type_category = type_cat; \
 	static const SchemaAtomicCategory_t atomic_category = atomic_cat; \
-	static inline bool Match( CSchemaType *ptr ) { return ptr->m_eTypeCategory == type_category && ptr->m_eAtomicCategory == atomic_category; } \
+	static inline bool Match( CSchemaType *ptr ) { return ptr->GetTypeCategory() == type_category && ptr->GetAtomicCategory() == atomic_category; } \
 };
 
 enum SchemaTypeCategory_t : uint8
@@ -58,6 +58,8 @@ inline uint32 CSchemaType_Hash( const char *pString, int len )
 class CSchemaType
 {
 public:
+	virtual SchemaTypeCategory_t GetTypeCategory() { return SCHEMA_TYPE_INVALID; }
+	virtual SchemaAtomicCategory_t GetAtomicCategory() { return SCHEMA_ATOMIC_INVALID; }
 	virtual bool IsValid() { return false; }
 	virtual const char *ToString( CBufferString &buff, bool bDontClearBuff ) { return ""; }
 	virtual void SpewDescription( LoggingChannelID_t channelID, const char *pszName ) {}
@@ -97,8 +99,6 @@ public:
 public:
 	CUtlString m_sTypeName;
 	CSchemaSystemTypeScope* m_pTypeScope;
-	SchemaTypeCategory_t m_eTypeCategory;
-	SchemaAtomicCategory_t m_eAtomicCategory;
 };
 
 class CSchemaType_Builtin : public CSchemaType
@@ -134,7 +134,6 @@ class CSchemaType_Atomic_CollectionOfT : public CSchemaType_Atomic_T
 public:
 	SchemaCollectionManipulatorFn_t m_pfnManipulator;
 	uint16 m_nElementSize;
-	uint64 m_nFixedBufferCount;
 };
 
 class CSchemaType_Atomic_TT : public CSchemaType_Atomic_T

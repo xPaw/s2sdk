@@ -279,7 +279,6 @@ public:
 		LoggingChannelFlags_t m_Flags;
 		LoggingVerbosity_t m_DefaultVerbosity;	
 		LoggingVerbosity_t m_Verbosity;
-		int m_nIndent;
 		Color m_SpewColor;
 		char m_Name[MAX_LOGGING_IDENTIFIER_LENGTH];
 		LoggingTag_t *m_pFirstTag;
