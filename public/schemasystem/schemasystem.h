@@ -169,7 +169,7 @@ private:
 public:
 	CThreadFastMutex m_Mutex;
 
-	uint8 m_unk002[0x5468 - 0x34];
+	uint8 m_unk002[0x5420 - 0x34];
 	
 	CUtlStringMap<CSchemaSystemTypeScope*> m_TypeScopes;
 	CUtlStringMap<BindingsAddressRangeForModule_t> m_BindingsAddressRanges;
